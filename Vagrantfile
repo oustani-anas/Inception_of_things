@@ -1,3 +1,4 @@
+
 # Vagrantfile (QEMU on Apple Silicon)
 Vagrant.configure("2") do |config|
   # Use one ARM64 box for both VMs
@@ -9,7 +10,7 @@ Vagrant.configure("2") do |config|
   # ---------- Server ----------
   config.vm.define "aoustaniS" do |ser|
     ser.vm.hostname = "aoustaniS"
-
+    ser.vm.network "private_network", ip: "192.168.56.110", nic_type: "virtio"
     # Forward VM:80 -> Host:5656
     ser.vm.network "forwarded_port", guest: 80, host: 5656
 
@@ -25,7 +26,8 @@ Vagrant.configure("2") do |config|
   # ---------- Worker ----------
   config.vm.define "aoustaniW" do |wor|
     wor.vm.hostname = "aoustaniW"
-
+    
+    wor.vm.network "private_network", ip: "192.168.56.111", nic_type: "virtio"
     # Forward VM:80 -> Host:5665
     wor.vm.network "forwarded_port", guest: 80, host: 5665
 
