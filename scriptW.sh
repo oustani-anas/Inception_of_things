@@ -1,16 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
+SERVER_IP="192.168.56.111"
+K3S_SERVER_IP="192.168.56.110"
 
-set -e
+sudo apt-get update
+sudo apt-get install -y curl
 
-echo "Installing k3s worker..."
-MASTER_IP=$1
+K3S_TOKEN=$(cat /vagrant/k3s_token.txt)
 
-if [ -z "$MASTER_IP" ]; then
-  echo "ERROR: MASTER_IP not provided"
-  exit 1
-fi
-
-TOKEN=$(cat /vagrant/node-token)
-curl -sfL https://get.k3s.io | K3S_URL="https://${MASTER_IP}:6443" K3S_TOKEN="$TOKEN" sh -
-
-echo "Worker setup done."
+# Install K3s Agent
+curl -sfL https://get.k3s.io | K3S_URL="https://$K3S_SERVER_IP:6443" K3S_TOKEN="$K3S_TOKEN" sh -s - --node-ip "$SERVER_IP"

@@ -1,18 +1,9 @@
+SERVER_IP="192.168.56.110"
 
-# 1) Turn off swap (Kubernetes requirement)
-sudo swapoff -a
-echo '# disabled for k8s' | sudo tee -a /etc/fstab
-sudo sed -ri '/\sswap\s/s/^/#/' /etc/fstab
+sudo apt-get update
+sudo apt-get install -y curl
 
-# 2) Install k3s server
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --write-kubeconfig-mode 644 --disable traefik" sh -
+# Install K3s Server
+curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644 --node-ip "$SERVER_IP"
 
-# 3) Configure kubectl for vagrant
-mkdir -p ~/.kube
-sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
-sudo chown $USER:$USER ~/.kube/config
-# Point kubeconfig to the server’s IP (NOT 127.0.0.1)
-sed -i 's/127\.0\.0\.1/192.168.56.110/' ~/.kube/config
-
-# 4) Get the join token
-sudo cat /var/lib/rancher/k3s/server/node-token
+sudo cat /var/lib/rancher/k3s/server/node-token > /vagrant/k3s_token.txt
