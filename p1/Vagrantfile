@@ -7,7 +7,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "aoustaniS" do |ser|
     ser.vm.hostname = "aoustaniS"
     ser.vm.network "private_network", ip: "192.168.56.110"  # as required
-    
+    ser.vm.provision "shell", path: "scriptS.sh"
 
     ser.vm.provider "virtualbox" do |vb|
       vb.cpus   = 1
@@ -21,7 +21,8 @@ Vagrant.configure("2") do |config|
   config.vm.define "aoustaniW" do |wor|
     wor.vm.hostname = "aoustaniW"
     wor.vm.network "private_network", ip: "192.168.56.111"  # as required
-
+    wor.vm.provision "shell", path: "scriptW.sh"
+    
     wor.vm.provider "virtualbox" do |vb|
       vb.cpus   = 1
       vb.memory = 1024
