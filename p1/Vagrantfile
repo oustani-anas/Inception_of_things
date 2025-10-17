@@ -1,3 +1,4 @@
+
 # Vagrantfile — VirtualBox (Apple Silicon)
 Vagrant.configure("2") do |config|
   # Pick a box that has a VirtualBox provider for arm64
